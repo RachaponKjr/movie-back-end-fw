@@ -17,7 +17,8 @@ const apiVersion = '/api/v1';
 
 const corsOptions = {
   origin: [
-    // 'http://152.42.255.125:3001',
+    'http://152.42.255.125:3010',
+    'http://152.42.255.125:3011',
     'http://localhost:4000',
     'http://localhost:3001',
   ],
