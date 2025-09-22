@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model CategoryMovies {
+  id            String @id @default(uuid())
+  catagory_name String
+
+  movies Movie[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String
+  password  String
+  role      Role     @default(User)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Movie {
+  id           String       @id @default(uuid())
+  category_id  String
+  movie_name   String
+  duration     String?
+  rate         Float?
+  view         Int?
+  release_year String?
+  film_poster  String
+  tage         Tags[]
+  video_url    String?
+  status       StatusMovie?
+  langMovie    LungMove?
+  isShow       Boolean      @default(false)
+  updatedAt    DateTime     @updatedAt
+  createdAt    DateTime     @default(now())
+
+  CategoryMovies CategoryMovies? @relation(fields: [category_id], references: [id])
+}
+
+model Banner {
+  id           String  @id @default(uuid())
+  banner_image String
+  banner_url   String?
+}
+
+model Tags {
+  id           String  @id @default(uuid())
+  tag_name     String
+  is_show_menu Boolean @default(false)
+  Movies       Movie[]
+}
+
+model Cms {
+  id            String   @id @default(uuid())
+  seo_title     String?
+  seo_disc      String?
+  seo_keyword   String[]
+  facebook      String?
+  facebook_url  String?
+  tiktok        String?
+  tiktok_url    String?
+  youtube       String?
+  youtube_url   String?
+  instagram     String?
+  instagram_url String?
+  line          String?
+  line_url      String?
+  telegram      String?
+  telegram_url  String?
+  image_banner  String?
+  banner_url    String?
+  image_advert  String?
+  advert_url    String?
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+}
+
+enum Role {
+  User
+  Admin
+  Owner
+}
+
+enum StatusMovie {
+  Soon
+  New
+  Hot
+}
+
+enum LungMove {
+  Thai
+  Eng
+}
