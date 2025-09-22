@@ -16,19 +16,14 @@ const app = express();
 const apiVersion = '/api/v1';
 
 const corsOptions = {
-  origin: [
-    'http://152.42.255.125:3010',
-    'http://152.42.255.125:3011',
-    'http://localhost:4000',
-    'http://localhost:3001',
-  ],
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 };
 
 app.use(cookieParser());
 
-// app.use(express.json());
+app.use(express.json());
 app.use(cors(corsOptions));
 app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(morgan('combined'));
@@ -43,6 +38,11 @@ app.use(`${apiVersion}/auth`, AuthRoute);
 app.use(`${apiVersion}/cms`, CMSRoute);
 app.use(`${apiVersion}/tag`, TageRoute);
 app.use(`${apiVersion}/banner`, BannerRoute);
+
+app.get('/ping', (req, res) => {
+  res.send('pong');
+  return;
+});
 
 // Serve static files (uploaded images)
 app.use('/cms', express.static(path.join(__dirname, './cms')));
