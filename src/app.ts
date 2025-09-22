@@ -16,7 +16,11 @@ const app = express();
 const apiVersion = '/api/v1';
 
 const corsOptions = {
-  origin: '*',
+  origin: [
+    'http://19.59.124.133:3010',
+    'http://19.59.124.133:3011',
+    'http://localhost:3000',
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 };
