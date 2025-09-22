@@ -17,8 +17,8 @@ const apiVersion = '/api/v1';
 
 const corsOptions = {
   origin: [
-    'http://19.59.124.133:3010',
-    'http://19.59.124.133:3011',
+    'http://119.59.124.133:3010',
+    'http://119.59.124.133:3011',
     'http://localhost:3000',
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
