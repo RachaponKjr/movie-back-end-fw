@@ -14,6 +14,7 @@ export const MovieSchema = z.object({
   langMovie: z.string().optional(),
   status: z.string().optional(),
   video_url: z.string().optional(),
+  video_type: z.string(),
   isShow: z.boolean().optional().default(false),
 });
 

@@ -33,7 +33,7 @@ router.post('/get-moviebytage', getMovieByTageController);
 router.post('/get-moviebykeyword', getMovieByKeyWord);
 router.put('/update-status/:id', authMiddleware, updateStatusMovieController);
 router.put('/update-view/:id', updateViewMovie);
-router.put(
+router.patch(
   '/update-movie/:id',
   authMiddleware,
   uploadMovie.fields([

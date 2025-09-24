@@ -32,7 +32,7 @@ model User {
 
 model Movie {
   id           String       @id @default(uuid())
-  category_id  String
+  category_id  String?
   movie_name   String
   duration     String?
   rate         Float?
@@ -41,13 +41,14 @@ model Movie {
   film_poster  String
   tage         Tags[]
   video_url    String?
+  video_type   VideoType?
   status       StatusMovie?
   langMovie    LungMove?
   isShow       Boolean      @default(false)
   updatedAt    DateTime     @updatedAt
   createdAt    DateTime     @default(now())
 
-  CategoryMovies CategoryMovies? @relation(fields: [category_id], references: [id])
+  CategoryMovies CategoryMovies? @relation(fields: [category_id], references: [id], onDelete: SetNull)
 }
 
 model Banner {
@@ -103,4 +104,9 @@ enum StatusMovie {
 enum LungMove {
   Thai
   Eng
+}
+
+enum VideoType {
+  Vertical
+  Horizontal
 }

@@ -186,7 +186,6 @@ const updateMovieController = async (req: Request, res: Response) => {
       | { [fieldname: string]: Express.Multer.File[] }
       | undefined;
     const rawPayload = req.body;
-
     if (!id) {
       res.status(400).send({
         message: 'ไม่พบ ID ที่ส่งมา',
@@ -223,9 +222,11 @@ const updateMovieController = async (req: Request, res: Response) => {
 
     rawPayload.isShow = rawPayload.isShow === 'true';
     rawPayload.rate = parseFloat(rawPayload.rate);
+    rawPayload.view = Number(rawPayload.view);
 
     const parsed = MovieSchema.partial().safeParse(rawPayload); // ใช้ .partial() สำหรับอัปเดตบางฟิลด์
     if (!parsed.success) {
+      console.log(parsed.error.flatten());
       res.status(400).send({
         message: 'ข้อมูลไม่ถูกต้อง',
         success: false,

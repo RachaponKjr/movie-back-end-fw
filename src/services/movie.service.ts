@@ -17,6 +17,7 @@ const createMovieService = async ({ payload }: { payload: any }) => {
       status: payload.status,
       video_url: payload.video_url,
       release_year: payload.release_year,
+      video_type: payload.video_type,
       film_poster: payload.film_poster,
       CategoryMovies: {
         connect: { id: payload.category_id },
@@ -157,12 +158,15 @@ const updateStatusMovieService = async ({
 
 const updateMovieService = async (id: string, payload: Partial<any>) => {
   const { tage, category_id, ...rest } = payload;
-
   const res = await db.movie.update({
     where: { id },
     data: {
       ...rest,
-      ...(category_id && { category: { connect: { id: category_id } } }),
+      ...(category_id && {
+        CategoryMovies: {
+          connect: { id: category_id },
+        },
+      }),
       ...(tage && {
         tage: {
           set: tage.map((tagId: string) => ({ id: tagId })),
@@ -170,7 +174,8 @@ const updateMovieService = async (id: string, payload: Partial<any>) => {
       }),
     },
     include: {
-      tage: true, // ถ้าอยากดึง tag ออกมาด้วย
+      tage: true,
+      CategoryMovies: true, // จะได้ข้อมูลหมวดหมู่กลับมาด้วย
     },
   });
 

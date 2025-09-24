@@ -20,8 +20,9 @@ const corsOptions = {
     'http://119.59.124.133:3010',
     'http://119.59.124.133:3011',
     'http://localhost:3000',
+    'http://localhost:4000',
   ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS','PATCH'],
   credentials: true,
 };
 
