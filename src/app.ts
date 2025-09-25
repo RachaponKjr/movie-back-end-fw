@@ -4,9 +4,9 @@ import morgan from 'morgan';
 import CatagoryRoute from './routes/catagory.route';
 import AuthRoute from './routes/user.route';
 import MovieRoute from './routes/movie.route';
-import CMSRoute from './routes/cms.route';
 import TageRoute from './routes/tag.route';
 import BannerRoute from './routes/banner.route';
+import AdvertRoute from './routes/advert.route';
 import { errorHandler } from './middlewares/errorHandler';
 import helmet from 'helmet';
 import path from 'path';
@@ -22,7 +22,7 @@ const corsOptions = {
     'http://localhost:3000',
     'http://localhost:4000',
   ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS','PATCH'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   credentials: true,
 };
 
@@ -40,9 +40,9 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(`${apiVersion}/catagory`, CatagoryRoute);
 app.use(`${apiVersion}/movies`, MovieRoute);
 app.use(`${apiVersion}/auth`, AuthRoute);
-app.use(`${apiVersion}/cms`, CMSRoute);
 app.use(`${apiVersion}/tag`, TageRoute);
 app.use(`${apiVersion}/banner`, BannerRoute);
+app.use(`${apiVersion}/advert`, AdvertRoute);
 
 app.get('/ping', (req, res) => {
   res.send('pong');

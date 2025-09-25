@@ -51,6 +51,12 @@ model Movie {
   CategoryMovies CategoryMovies? @relation(fields: [category_id], references: [id], onDelete: SetNull)
 }
 
+model Advert {
+  id          String  @id @default(uuid())
+  advert_image String
+  advert_link  String?
+}
+
 model Banner {
   id           String  @id @default(uuid())
   banner_image String
@@ -62,31 +68,6 @@ model Tags {
   tag_name     String
   is_show_menu Boolean @default(false)
   Movies       Movie[]
-}
-
-model Cms {
-  id            String   @id @default(uuid())
-  seo_title     String?
-  seo_disc      String?
-  seo_keyword   String[]
-  facebook      String?
-  facebook_url  String?
-  tiktok        String?
-  tiktok_url    String?
-  youtube       String?
-  youtube_url   String?
-  instagram     String?
-  instagram_url String?
-  line          String?
-  line_url      String?
-  telegram      String?
-  telegram_url  String?
-  image_banner  String?
-  banner_url    String?
-  image_advert  String?
-  advert_url    String?
-  updatedAt     DateTime @updatedAt
-  createdAt     DateTime @default(now())
 }
 
 enum Role {
