@@ -203,6 +203,23 @@ const delMovieService = async (id: string) => {
   return res;
 };
 
+const searchMovieService = async (search: string) => {
+  const movies = await db.movie.findMany({
+    where: {
+      movie_name: {
+        contains: search,
+        mode: 'insensitive',
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    take: 20,
+  });
+
+  return movies;
+};
+
 export {
   getMovieByIdService,
   getMoviesService,
@@ -214,4 +231,5 @@ export {
   updateMovieService,
   updateViewMovieService,
   getMovieByKeyWordService,
+  searchMovieService,
 };

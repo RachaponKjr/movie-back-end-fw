@@ -6,6 +6,7 @@ import {
   getMovieByKeyWord,
   getMovieByTageController,
   getMoviesController,
+  searchMovieController,
   updateMovieController,
   updateStatusMovieController,
   updateViewMovie,
@@ -28,6 +29,7 @@ router.post(
 );
 router.get('/get-movies', getMoviesController);
 router.get('/get-movie/:id', getMovieByIdController);
+router.post('/search-movie', searchMovieController);
 router.post('/get-moviebycatagory', getMovieByCatagory);
 router.post('/get-moviebytage', getMovieByTageController);
 router.post('/get-moviebykeyword', getMovieByKeyWord);

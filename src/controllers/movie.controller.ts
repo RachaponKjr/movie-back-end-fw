@@ -7,6 +7,7 @@ import {
   getMovieByKeyWordService,
   getMovieByTageService,
   getMoviesService,
+  searchMovieService,
   updateMovieService,
   updateStatusMovieService,
   updateViewMovieService,
@@ -398,6 +399,28 @@ const updateViewMovie = async (req: Request, res: Response) => {
   }
 };
 
+const searchMovieController = async (req: Request, res: Response) => {
+  try {
+    const { search } = req.query;
+    if (!search || typeof search !== 'string') {
+      res.status(400).json({ error: 'ต้องส่ง query' });
+      return;
+    }
+
+    const searchRes = await searchMovieService(search);
+
+    res.json({ data: [...searchRes], success: true });
+    return;
+  } catch (err) {
+    res.status(500).send({
+      message: 'เกิดข้อผิดพลาดของเซิร์ฟเวอร์',
+      success: false,
+      error: (err as Error).message,
+    });
+    return;
+  }
+};
+
 export {
   getMovieByIdController,
   getMovieByTageController,
@@ -409,4 +432,5 @@ export {
   updateStatusMovieController,
   getMovieByCatagory,
   updateViewMovie,
+  searchMovieController,
 };
