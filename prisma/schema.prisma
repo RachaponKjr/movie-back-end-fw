@@ -52,14 +52,15 @@ model Movie {
 }
 
 model Advert {
-  id          String  @id @default(uuid())
+  id           String  @id @default(uuid())
   advert_image String
   advert_link  String?
 }
 
 model Banner {
-  id           String  @id @default(uuid())
+  id           String     @id @default(uuid())
   banner_image String
+  banner_type  BannerType @default(banner_main)
   banner_url   String?
 }
 
@@ -90,4 +91,9 @@ enum LungMove {
 enum VideoType {
   Vertical
   Horizontal
+}
+
+enum BannerType {
+  banner_main
+  banner_show
 }

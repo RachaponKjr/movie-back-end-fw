@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 interface BannerProps {
   banner_url: string;
+  banner_type: 'banner_main' | 'banner_show';
   banner_image: string;
 }
 

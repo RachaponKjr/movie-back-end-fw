@@ -19,11 +19,17 @@ route.post(
   uploadMovie.single('banner_image'),
   async (req: Request, res: Response) => {
     try {
-      const { banner_url } = req.body as { banner_url: string };
+      const { banner_url, banner_type } = req.body as {
+        banner_url: string;
+        banner_type?: 'banner_main' | 'banner_show';
+      };
+
+      console.log(req.body);
       const file = req.file;
       const payload = {
         banner_image: '',
         banner_url,
+        banner_type: banner_type ?? 'banner_main',
       };
       if (file) {
         payload.banner_image = `/uploads/banner/${file.filename}`;
@@ -48,6 +54,7 @@ route.post(
 route.get('/get-banner', async (req: Request, res: Response) => {
   try {
     const getRes = await getBannerService();
+    console.log(getRes);
     if (!getRes) {
       res.status(400).json({ success: false, message: 'ไม่มีข้อมูล' });
       return;
