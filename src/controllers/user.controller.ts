@@ -1,6 +1,7 @@
 import {
   createAcceptService,
   delAcceptService,
+  getAcceptById,
   getAcceptByUsername,
   getAcceptsService,
   updateAccept,
@@ -35,7 +36,7 @@ const createAccept = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     const payload = {
       password: hashedPassword,
-      role: role?.toUpperCase() as 'User' | 'Admin' | 'Owner' | undefined,
+      role: role as 'User' | 'Admin' | 'Owner' | undefined,
       username: username,
     };
     console.log(payload);
@@ -137,6 +138,7 @@ const updateAcceptController = async (req: Request, res: Response) => {
     res.status(200).send({ data: updateRes, message: 'สำเร็จ' });
     return;
   } catch (err) {
+    console.log(err);
     res.status(500).send({
       message: 'Server Error',
       error: (err as Error).message,

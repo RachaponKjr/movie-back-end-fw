@@ -50,8 +50,8 @@ app.get('/ping', (req, res) => {
 });
 
 // Serve static files (uploaded images)
-app.use('/cms', express.static(path.join(__dirname, './cms')));
-app.use('/banner', express.static(path.join(__dirname, './banner')));
+// app.use('/cms', express.static(path.join(__dirname, './cms')));
+// app.use('/banner', express.static(path.join(__dirname, './banner')));
 app.use('/uploads', express.static(path.join(__dirname, './uploads')));
 
 // Global error handler (should be after routes)

@@ -17,6 +17,15 @@ const getAcceptsService = async () => {
   return res;
 };
 
+const getAcceptById = async ({ id }: { id: string }) => {
+  const res = await db.user.findFirst({
+    where: {
+      id,
+    },
+  });
+  return res
+};
+
 const getAcceptByUsername = async (username: string) => {
   const res = await db.user.findFirst({
     where: {
@@ -57,4 +66,5 @@ export {
   getAcceptsService,
   delAcceptService,
   updateAccept,
+  getAcceptById
 };
