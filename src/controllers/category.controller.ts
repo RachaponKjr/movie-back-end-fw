@@ -79,6 +79,7 @@ const updateCatagoryController = async (req: Request, res: Response) => {
     }
     res.status(200).send({ data: { ...resUpdate }, message: 'อัพเดทสำเร็จ' });
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: 'Server Error!' });
     return;
   }

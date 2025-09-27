@@ -12,7 +12,7 @@ const router = express.Router();
 router.post('/create-catagory', authMiddleware, createCatagoryController);
 router.get('/get-catagorys', getCatagorysController);
 router.get('/get-catagory/:id', getCatagoryByIdController);
-router.put('/update-catagory/:id', authMiddleware, updateCatagoryController);
+router.patch('/update-catagory/:id', authMiddleware, updateCatagoryController);
 router.delete('/del-catagory/:id', authMiddleware, delCatagoryController);
 
 export default router;

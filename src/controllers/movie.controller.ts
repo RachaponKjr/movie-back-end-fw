@@ -43,7 +43,15 @@ const createMovieController = async (req: Request, res: Response) => {
       payload.video_url = `/uploads/movies/${files.video_url[0].filename}`;
     }
 
-    console.log(payload);
+    if (payload.status) {
+      if (payload.status === 'null') {
+        payload.status = 'NotStatus';
+      } else if (payload.status === 'New' || payload.status === 'Hot') {
+        payload.status = payload.status;
+      }
+    } else {
+      payload.status = 'NotStatus';
+    }
 
     const createRes = await createMovieService({ payload });
 
@@ -75,11 +83,7 @@ const createMovieController = async (req: Request, res: Response) => {
 const getMoviesController = async (req: Request, res: Response) => {
   try {
     const getRes = await getMoviesService();
-    if (getRes.length === 0) {
-      res.status(404).send({ message: 'ไม่พบ movies', status: false });
-      return;
-    }
-    res.status(200).send({ data: getRes, status: true });
+    res.status(200).send({ data: getRes ?? [], status: true });
     return;
   } catch (err) {
     res.status(500).send({
