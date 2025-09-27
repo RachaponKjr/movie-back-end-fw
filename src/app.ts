@@ -45,7 +45,7 @@ app.use(`${apiVersion}/banner`, BannerRoute);
 app.use(`${apiVersion}/advert`, AdvertRoute);
 
 app.get('/ping', (req, res) => {
-  res.send('pong');
+  res.send('docker test');
   return;
 });
 
