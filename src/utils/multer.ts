@@ -8,7 +8,7 @@ import fs from 'fs';
  * @param folder โฟลเดอร์ที่จะเก็บไฟล์ เช่น 'posters' หรือ 'videos'
  */
 export const createMulterUpload = (folder: string) => {
-  const uploadPath = path.join('/var/www/uploads', folder);
+  const uploadPath = path.join(__dirname, '..', 'uploads', folder);
 
   // สร้างโฟลเดอร์ถ้ายังไม่มี
   if (!fs.existsSync(uploadPath)) {
