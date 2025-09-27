@@ -2,7 +2,7 @@
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
-
+ 
 /**
  * สร้าง Multer instance โดยกำหนดโฟลเดอร์ที่ต้องการอัปโหลด
  * @param folder โฟลเดอร์ที่จะเก็บไฟล์ เช่น 'posters' หรือ 'videos'
