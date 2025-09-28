@@ -15,8 +15,9 @@ datasource db {
 }
 
 model CategoryMovies {
-  id            String @id @default(uuid())
+  id            String  @id @default(uuid())
   catagory_name String
+  isShow        Boolean @default(false)
 
   movies Movie[]
 }
@@ -31,7 +32,7 @@ model User {
 }
 
 model Movie {
-  id           String      @id @default(uuid())
+  id           String       @id @default(uuid())
   category_id  String?
   movie_name   String
   duration     String?
@@ -44,9 +45,9 @@ model Movie {
   video_type   VideoType?
   status       StatusMovie?
   langMovie    LungMove?
-  isShow       Boolean     @default(false)
-  updatedAt    DateTime    @updatedAt
-  createdAt    DateTime    @default(now())
+  isShow       Boolean      @default(false)
+  updatedAt    DateTime     @updatedAt
+  createdAt    DateTime     @default(now())
 
   CategoryMovies CategoryMovies? @relation(fields: [category_id], references: [id], onDelete: SetNull)
 }

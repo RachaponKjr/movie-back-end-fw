@@ -2,14 +2,39 @@ import { PrismaClient } from '@prisma/client';
 
 const db = new PrismaClient();
 
-const createCatagoryService = async ({ title }: { title: string }) => {
+const createCatagoryService = async ({
+  title,
+  isShow = false,
+}: {
+  title: string;
+  isShow: boolean;
+}) => {
   console.log(title);
   const res = await db.categoryMovies.create({
     data: {
       catagory_name: title,
+      isShow: isShow,
     },
   });
   return res;
+};
+
+const updateIsShowService = async ({
+  id,
+  isShow,
+}: {
+  id: string;
+  isShow: boolean;
+}) => {
+  const res = await db.categoryMovies.update({
+    where: {
+      id,
+    },
+    data: {
+      isShow,
+    },
+  });
+  return res
 };
 
 const getCatagorysService = async () => {
@@ -99,4 +124,5 @@ export {
   getCatagoryByIdService,
   updateCatagoryService,
   checkCatagoryService,
+  updateIsShowService,
 };
