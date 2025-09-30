@@ -9,7 +9,6 @@ const createCatagoryService = async ({
   title: string;
   isShow: boolean;
 }) => {
-  console.log(title);
   const res = await db.categoryMovies.create({
     data: {
       catagory_name: title,

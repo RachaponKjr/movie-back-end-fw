@@ -24,7 +24,6 @@ route.post(
         banner_type?: 'banner_main' | 'banner_show';
       };
 
-      console.log(req.body);
       const file = req.file;
       const payload = {
         banner_image: '',
@@ -54,7 +53,6 @@ route.post(
 route.get('/get-banner', async (req: Request, res: Response) => {
   try {
     const getRes = await getBannerService();
-    console.log(getRes);
     if (!getRes) {
       res.status(400).json({ success: false, message: 'ไม่มีข้อมูล' });
       return;

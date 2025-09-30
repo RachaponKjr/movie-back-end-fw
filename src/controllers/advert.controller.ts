@@ -85,7 +85,6 @@ const updateAdvertController = async (req: Request, res: Response) => {
       }
     }
     payload.advert_image = `/uploads/advert/${files?.filename}`;
-    console.log(payload);
     const updateRes = await updateAdvertService({ id, payload });
     res.status(400).json({ success: true, data: { ...updateRes } });
     return;

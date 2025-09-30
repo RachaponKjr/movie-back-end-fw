@@ -39,7 +39,6 @@ const createAccept = async (req: Request, res: Response) => {
       role: role as 'User' | 'Admin' | 'Owner' | undefined,
       username: username,
     };
-    console.log(payload);
     const createAcceptRes = await createAcceptService(payload);
     if (!createAcceptRes) {
       res.status(400).send({ message: 'ไม่สามารถสร้าง Accept ได้' });
