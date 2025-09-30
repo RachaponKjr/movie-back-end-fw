@@ -10,6 +10,7 @@ import {
   updateMovieController,
   updateStatusMovieController,
   updateViewMovie,
+  watchMovieController,
 } from '../controllers/movie.controller';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { createMulterUpload } from '../utils/multer';
@@ -27,6 +28,7 @@ router.post(
   ]),
   createMovieController,
 );
+
 router.get('/get-movies', getMoviesController);
 router.get('/get-movie/:id', getMovieByIdController);
 router.post('/search-movie', searchMovieController);
@@ -45,5 +47,8 @@ router.patch(
   updateMovieController,
 );
 router.delete('/del-movie/:id', authMiddleware, delMovieController);
+
+// WATCHMOVIE
+router.get('/watch/:filename', watchMovieController);
 
 export default router;

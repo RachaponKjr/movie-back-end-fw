@@ -1,3 +1,5 @@
+import fs from 'fs'; // ใช้ fs ปกติสำหรับ existsSync
+import fsPromises from 'fs/promises'; // ใช้ fs/promises สำหรับ async functions
 import { checkCatagoryService } from '../services/catagory.service';
 import {
   createMovieService,
@@ -40,7 +42,7 @@ const createMovieController = async (req: Request, res: Response) => {
     }
 
     if (files?.video_url?.[0]) {
-      payload.video_url = `/uploads/movies/${files.video_url[0].filename}`;
+      payload.video_url = `/movies/watch/${files.video_url[0].filename}`;
     }
 
     if (payload.status) {
@@ -425,6 +427,55 @@ const searchMovieController = async (req: Request, res: Response) => {
   }
 };
 
+const watchMovieController = async (req: Request, res: Response) => {
+  try {
+    const { filename } = req.params as { filename: string };
+    const videoPath = path.join(__dirname, '../uploads/movies', filename);
+
+    if (!fs.existsSync(videoPath)) {
+      res.status(404).send('File not found');
+      return;
+    }
+
+    const stat = fs.statSync(videoPath);
+    const fileSize = stat.size;
+
+    const range = req.headers.range;
+    if (range) {
+      const parts = range.replace(/bytes=/, '').split('-');
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+      const chunkSize = end - start + 1;
+
+      const file = fs.createReadStream(videoPath, { start, end });
+      const head = {
+        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunkSize,
+        'Content-Type': 'video/mp4',
+      };
+
+      res.writeHead(206, head);
+      file.pipe(res);
+    } else {
+      // ถ้าไม่มี Range ให้โหลดทั้งไฟล์
+      const head = {
+        'Content-Length': fileSize,
+        'Content-Type': 'video/mp4',
+      };
+      res.writeHead(200, head);
+      fs.createReadStream(videoPath).pipe(res);
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: 'เกิดข้อผิดพลาดของเซิร์ฟเวอร์',
+      success: false,
+      error: (err as Error).message,
+    });
+    return;
+  }
+};
+
 export {
   getMovieByIdController,
   getMovieByTageController,
@@ -437,4 +488,5 @@ export {
   getMovieByCatagory,
   updateViewMovie,
   searchMovieController,
+  watchMovieController,
 };
