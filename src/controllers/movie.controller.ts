@@ -439,40 +439,42 @@ const watchMovieController = async (req: Request, res: Response) => {
 
     const stat = fs.statSync(videoPath);
     const fileSize = stat.size;
-
     const range = req.headers.range;
-    if (range) {
-      const parts = range.replace(/bytes=/, '').split('-');
-      const start = parseInt(parts[0], 10);
-      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
-      const chunkSize = end - start + 1;
 
-      const file = fs.createReadStream(videoPath, { start, end });
-      const head = {
-        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-        'Accept-Ranges': 'bytes',
-        'Content-Length': chunkSize,
-        'Content-Type': 'video/mp4',
-      };
-
-      res.writeHead(206, head);
-      file.pipe(res);
-    } else {
-      // ถ้าไม่มี Range ให้โหลดทั้งไฟล์
-      const head = {
-        'Content-Length': fileSize,
-        'Content-Type': 'video/mp4',
-      };
-      res.writeHead(200, head);
-      fs.createReadStream(videoPath).pipe(res);
+    if (!range) {
+      // ถ้า client ไม่ส่ง range มา — ปฏิเสธ
+      res.status(416).send('Requires Range header');
+      return;
     }
+
+    const parts = range.replace(/bytes=/, '').split('-');
+    const start = parseInt(parts[0], 10);
+
+    const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+    const chunkSize = end - start + 1;
+
+    if (start >= fileSize || end >= fileSize) {
+      res.status(416).send('Range Not Satisfiable');
+      return;
+    }
+
+    const file = fs.createReadStream(videoPath, { start, end });
+
+    res.writeHead(206, {
+      'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': chunkSize,
+      'Content-Type': 'video/mp4',
+    });
+
+    file.pipe(res);
   } catch (err) {
+    console.error('Streaming Error:', err);
     res.status(500).send({
       message: 'เกิดข้อผิดพลาดของเซิร์ฟเวอร์',
       success: false,
       error: (err as Error).message,
     });
-    return;
   }
 };
 
