@@ -35,7 +35,7 @@ app.use(morgan('combined'));
 // app.use(express.json({ limit: '10mb' }));
 
 app.use(conditionalJsonParser);
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1000mb' }));
 // Routes
 app.use(`${apiVersion}/catagory`, CatagoryRoute);
 app.use(`${apiVersion}/movies`, MovieRoute);
