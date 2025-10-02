@@ -16,8 +16,10 @@ import {
 import { Movie, MovieSchema } from '../types/movie';
 import { Request, Response } from 'express';
 import path from 'path';
+import { execSync } from 'child_process';
 
-ffmpeg.setFfmpegPath('/usr/bin/ffmpeg');
+const ffmpegPath = execSync('which ffmpeg').toString().trim();
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 const createMovieController = async (req: Request, res: Response) => {
   try {
