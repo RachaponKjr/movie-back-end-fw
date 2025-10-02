@@ -19,7 +19,7 @@ import path from 'path';
 import { execSync } from 'child_process';
 
 const ffmpegPath = execSync('which ffmpeg').toString().trim();
-ffmpeg.setFfmpegPath(ffmpegPath);
+ffmpeg.setFfmpegPath(ffmpegPath); 
 
 const createMovieController = async (req: Request, res: Response) => {
   try {
