@@ -4,15 +4,18 @@ WORKDIR /app
 
 # คัดลอกไฟล์ package.json และ package-lock.json (ถ้ามี)
 COPY package*.json ./
+RUN apt-get update && apt-get install -y ffmpeg which
 
 # ติดตั้ง dependencies (รวม prisma client, nodemon, ts-node ด้วย)
 RUN npm install
+
 
 # คัดลอกโค้ดทั้งหมด
 COPY . .
 
 # รันคำสั่ง generate Prisma Client (ทุกครั้งที่ container start)
 RUN npx prisma generate
+
 
 # expose port ที่แอปรัน (เช่น 3000)
 EXPOSE 3030
