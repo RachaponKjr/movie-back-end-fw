@@ -17,6 +17,8 @@ import { Movie, MovieSchema } from '../types/movie';
 import { Request, Response } from 'express';
 import path from 'path';
 
+ffmpeg.setFfmpegPath('/usr/bin/ffmpeg');
+
 const createMovieController = async (req: Request, res: Response) => {
   try {
     let payload = req.body as Movie;
