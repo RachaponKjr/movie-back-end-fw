@@ -1,6 +1,5 @@
 import fs from 'fs'; // ใช้ fs ปกติสำหรับ existsSync
-import fsPromises from 'fs/promises'; // ใช้ fs/promises สำหรับ async functions
-import { checkCatagoryService } from '../services/catagory.service';
+import ffmpeg from 'fluent-ffmpeg';
 import {
   createMovieService,
   delMovieService,
@@ -42,9 +41,28 @@ const createMovieController = async (req: Request, res: Response) => {
     }
 
     if (files?.video_url?.[0]) {
-      payload.video_url = `/movies/watch/${files.video_url[0].filename}`;
-    }
+      const originalPath = files.video_url[0].path;
+      const optimizedPath = originalPath.replace('.mp4', '_optimized.mp4');
 
+      await new Promise<void>((resolve, reject) => {
+        ffmpeg(originalPath)
+          .outputOptions('-movflags faststart')
+          .outputOptions('-c copy')
+          .save(optimizedPath)
+          .on('end', () => {
+            // ลบไฟล์เก่า (optional)
+            fs.unlinkSync(originalPath);
+
+            // ใช้ path ของไฟล์ใหม่
+            payload.video_url = `/movies/watch/${path.basename(optimizedPath)}`;
+            resolve();
+          })
+          .on('error', (err) => {
+            console.error('FFmpeg error:', err);
+            reject(err);
+          });
+      });
+    }
     if (payload.status) {
       if (payload.status === 'null') {
         payload.status = 'NotStatus';
