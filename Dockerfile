@@ -52,7 +52,7 @@ FROM node:23-alpine AS production-stage
 WORKDIR /app
 
 # ติดตั้ง runtime dependencies (ไม่รวม devDependencies)
-COPY package*.json ./
+COPY package*.json tsconfig.json ./
 RUN npm ci --omit=dev
 
 # คัดลอก build output จาก stage แรก
