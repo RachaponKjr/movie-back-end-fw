@@ -22,3 +22,48 @@ EXPOSE 3030
 
 # รันแอปด้วย nodemon ผ่าน npx
 CMD ["npm", "run", "dev"]
+# ========================
+# Stage 1: Build Stage
+# ========================
+FROM node:23-alpine AS build-stage
+
+WORKDIR /app
+
+# ติดตั้ง dependencies สำหรับ build (เช่น ffmpeg)
+RUN apk add --no-cache ffmpeg bash
+
+# คัดลอก package.json และ package-lock.json
+COPY package*.json ./
+
+# ติดตั้ง dependencies
+RUN npm ci
+
+# คัดลอก source code
+COPY . .
+
+# สร้าง Prisma Client
+RUN npx prisma generate
+
+# ========================
+# Stage 2: Production Stage
+# ========================
+FROM node:23-alpine AS production-stage
+
+WORKDIR /app
+
+# ติดตั้ง runtime dependencies (ไม่รวม devDependencies)
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+# คัดลอก build output จาก stage แรก
+COPY --from=build-stage /app/node_modules ./node_modules
+COPY --from=build-stage /app/prisma ./prisma
+COPY --from=build-stage /app/src ./src
+
+# ติดตั้ง ffmpeg runtime
+RUN apk add --no-cache ffmpeg bash
+
+EXPOSE 3030
+
+# รันแอป
+CMD ["npm", "run", "dev"]
